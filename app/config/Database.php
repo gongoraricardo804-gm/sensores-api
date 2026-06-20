@@ -4,16 +4,21 @@ class Database
 {
     private $pdo;
 
+    private function env($key)
+    {
+        return getenv($key) ?: ($_ENV[$key] ?? $_SERVER[$key] ?? null);
+    }
+
     public function connect()
     {
         try {
-            $host = getenv("MYSQLHOST");
-            $port = getenv("MYSQLPORT");
-            $user = getenv("MYSQLUSER");
-            $pass = getenv("MYSQLPASSWORD");
-            $db   = getenv("MYSQLDATABASE");
+            $host = $this->env("MYSQLHOST");
+            $port = $this->env("MYSQLPORT");
+            $user = $this->env("MYSQLUSER");
+            $pass = $this->env("MYSQLPASSWORD");
+            $db   = $this->env("MYSQLDATABASE");
 
-            if (!$host || !$port || !$user || !$db) {
+            if (!$host || !$port || !$user || !$pass || !$db) {
                 http_response_code(500);
 
                 echo json_encode([
