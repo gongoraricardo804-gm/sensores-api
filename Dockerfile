@@ -1,11 +1,9 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-COPY . /var/www/html/
+WORKDIR /app
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY . /app
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD php -S 0.0.0.0:${PORT:-8080} -t /app
