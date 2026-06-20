@@ -16,7 +16,9 @@ class Database
             $port = $this->env("MYSQLPORT");
             $user = $this->env("MYSQLUSER");
             $pass = $this->env("MYSQLPASSWORD");
-            $db   = $this->env("MYSQLDATABASE");
+
+            // Railway puede usar MYSQLDATABASE o MYSQL_DATABASE
+            $db = $this->env("MYSQLDATABASE") ?: $this->env("MYSQL_DATABASE");
 
             if (!$host || !$port || !$user || !$pass || !$db) {
                 http_response_code(500);
