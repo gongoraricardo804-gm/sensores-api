@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Sensores ESP32</title>
+    <title>Sensores ESP32</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Chart.js -->
@@ -114,8 +114,8 @@
 <body>
 
 <header>
-    <h1>Dashboard de Sensores ESP32</h1>
-    <p>Monitoreo en tiempo real de temperatura, humedad y distancia</p>
+    <h1>Sensores ESP32</h1>
+    <p>Monitoreo</p>
 </header>
 
 <div class="container">
