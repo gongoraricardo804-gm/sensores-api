@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../config/Database.php';
+require_once dirname(__DIR__) . '/config/Database.php';
 
 class LecturaModel
 {
@@ -8,8 +8,8 @@ class LecturaModel
 
     public function __construct()
     {
-        $database = new Conexiondb();
-        $this->conexion = $database->conectardb();
+        $database = new Database();
+        $this->conexion = $database->connect();
     }
 
     public function actualizarLectura(
