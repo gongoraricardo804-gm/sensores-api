@@ -1,47 +1,56 @@
 <?php
 
-require_once __DIR__ . "/../config/Database.php";
+require_once __DIR__ . '/../config/Conexiondb.php';
 
 class LecturaModel
 {
-    private $conexion;
+    private PDO $conexion;
 
     public function __construct()
     {
-        $db = new Database();
-        $this->conexion = $db->connect();
+        $database = new Conexiondb();
+        $this->conexion = $database->conectardb();
     }
 
-    public function actualizarLectura($temperatura, $humedad, $distancia)
-    {
-        $sql = "INSERT INTO lecturas 
-                (id, temperatura, humedad, distancia)
-                VALUES (1, ?, ?, ?)
+    public function actualizarLectura(
+        float $temperatura,
+        float $humedad,
+        float $lluvia
+    ): bool {
+        $sql = "INSERT INTO lecturas
+                    (id, temperatura, humedad, lluvia)
+                VALUES
+                    (1, :temperatura, :humedad, :lluvia)
                 ON DUPLICATE KEY UPDATE
                     temperatura = VALUES(temperatura),
                     humedad = VALUES(humedad),
-                    distancia = VALUES(distancia),
+                    lluvia = VALUES(lluvia),
                     fecha = CURRENT_TIMESTAMP";
 
-        $stmt = $this->conexion->prepare($sql);
+        $consulta = $this->conexion->prepare($sql);
 
-        return $stmt->execute([
-            $temperatura,
-            $humedad,
-            $distancia
+        return $consulta->execute([
+            ':temperatura' => $temperatura,
+            ':humedad' => $humedad,
+            ':lluvia' => $lluvia
         ]);
     }
 
-    public function obtenerUltimaLectura()
+    public function obtenerUltimaLectura(): array|false
     {
-        $sql = "SELECT id, temperatura, humedad, distancia, fecha
+        $sql = "SELECT
+                    id,
+                    temperatura,
+                    humedad,
+                    lluvia,
+                    fecha
                 FROM lecturas
                 WHERE id = 1
                 LIMIT 1";
 
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->execute();
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute();
 
-        return $stmt->fetch();
+        return $consulta->fetch(PDO::FETCH_ASSOC);
     }
 }
